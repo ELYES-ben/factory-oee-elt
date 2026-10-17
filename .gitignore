@@ -1,0 +1,23 @@
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+
+# dbt
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+dbt/.user.yml
+logs/
+
+# Airflow
+airflow/.env
+airflow/logs/
+airflow/config/
+airflow/plugins/
+
+# Secrets : JAMAIS sur GitHub
+*-key.json
+gha-creds-*.json
+.env
