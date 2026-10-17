@@ -17,7 +17,7 @@ airflow/logs/
 airflow/config/
 airflow/plugins/
 
-# Secrets : JAMAIS sur GitHub
+# Secrets 
 *-key.json
 gha-creds-*.json
 .env
