@@ -1,0 +1,1 @@
+"""Ingestion des données brutes (API RTE et simulateur MES) vers BigQuery."""
