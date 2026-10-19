@@ -1,0 +1,5 @@
+machine_id,machine_name,process_step,step_order,ideal_cycle_time_s,power_kw,idle_power_kw,is_line_output
+CUT-01,Coupe-sertissage 1,Coupe et sertissage des fils,1,2.0,7.5,1.5,false
+CUT-02,Coupe-sertissage 2,Coupe et sertissage des fils,1,2.0,7.5,1.5,false
+WELD-01,Soudure ultrason,Soudure des épissures,2,6.0,4.0,0.8,false
+TEST-01,Banc de test électrique,Test électrique final,3,45.0,2.5,0.5,true
