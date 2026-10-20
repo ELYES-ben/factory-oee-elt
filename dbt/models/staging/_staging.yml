@@ -1,0 +1,41 @@
+models:
+  - name: stg_rte__grid_co2
+    description: Intensité CO2 du réseau (RTE), typée et dédoublonnée, un enregistrement par quart d'heure.
+    columns:
+      - name: slot_start
+        description: Début du quart d'heure, en UTC.
+        data_tests:
+          - unique
+          - not_null
+      - name: grid_co2_g_per_kwh
+        description: Grammes de CO2 émis par kWh produit en France (nul pour les quarts d'heure à venir).
+      - name: consumption_mw
+        description: Consommation électrique française, en MW.
+
+  - name: stg_mes__production
+    description: Production des machines, une ligne par machine et par quart d'heure d'ouverture.
+    columns:
+      - name: production_slot_id
+        description: Clé unique, machine et début du quart d'heure.
+        data_tests:
+          - unique
+          - not_null
+      - name: machine_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('machines')
+                field: machine_id
+      - name: run_minutes
+        description: Minutes de marche dans le quart d'heure (0 à 15).
+        data_tests:
+          - not_null
+      - name: downtime_reason
+        description: Cause de l'arrêt, vide si la machine a tourné 15 minutes.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['BREAKDOWN', 'CHANGEOVER', 'MATERIAL_SHORTAGE']
+      - name: good_parts
+        description: Pièces bonnes = pièces produites - pièces rebutées.

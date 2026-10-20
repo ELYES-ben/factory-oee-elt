@@ -1,0 +1,15 @@
+name: factory_oee
+version: "1.0.0"
+profile: factory_oee
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  factory_oee:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
