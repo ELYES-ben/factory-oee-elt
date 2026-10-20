@@ -1,0 +1,22 @@
+seeds:
+  - name: machines
+    description: Référentiel des machines de la ligne (valeurs fictives réalistes).
+    config:
+      column_types:
+        ideal_cycle_time_s: float64
+        power_kw: float64
+        idle_power_kw: float64
+    columns:
+      - name: machine_id
+        description: Identifiant de la machine, identique à celui du MES.
+        data_tests:
+          - unique
+          - not_null
+      - name: ideal_cycle_time_s
+        description: Temps de cycle théorique, en secondes par pièce.
+      - name: power_kw
+        description: Puissance électrique quand la machine tourne, en kW.
+      - name: idle_power_kw
+        description: Puissance électrique quand la machine est à l'arrêt, en kW.
+      - name: is_line_output
+        description: Vrai pour la dernière machine de la ligne, qui sort les faisceaux finis.

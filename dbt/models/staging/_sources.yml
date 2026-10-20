@@ -1,0 +1,16 @@
+sources:
+  - name: raw
+    description: Données brutes chargées par le script Python (python -m ingestion.main).
+    schema: raw
+    config:
+      loaded_at_field: _loaded_at
+      freshness:
+        warn_after: {count: 26, period: hour}
+        error_after: {count: 50, period: hour}
+    tables:
+      - name: rte_eco2mix
+        description: >
+          Données éCO2mix temps réel de RTE (API ODRÉ), un enregistrement par quart d'heure.
+          Le JSON de l'API est gardé tel quel dans la colonne payload.
+      - name: mes_production_15min
+        description: Export du MES simulé, une ligne par machine et par quart d'heure d'ouverture.
