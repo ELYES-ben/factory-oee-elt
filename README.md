@@ -45,3 +45,24 @@ export GCP_PROJECT_ID=<id> GOOGLE_APPLICATION_CREDENTIALS=<chemin/de/la/cle.json
 python -m ingestion.main --days 30
 cd dbt && dbt build
 ```
+## Orchestration (Airflow 3, Docker)
+
+Le DAG `factory_oee_pipeline` tourne chaque jour à 5 h UTC :
+
+`extract_load` → `check_source_freshness` → `dbt_build --target prod`
+
+- 2 nouvelles tentatives à 5 min d'intervalle ; une tâche en échec bloque les suivantes (`upstream_failed`).
+- Image personnalisée : dbt et le client BigQuery dans un venv séparé (`/opt/pipeline_venv`) pour éviter les conflits avec Airflow.
+- Code et clé montés en volumes (clé en lecture seule, jamais dans l'image).
+
+![Graph du DAG](docs/img/airflow_graph.png)
+
+### Lancer Airflow en local
+
+```bash
+cd airflow
+cp .env.example .env   # puis renseigner ses valeurs
+docker compose build
+docker compose up airflow-init
+docker compose up -d   # UI : http://localhost:8080 (airflow / airflow)
+```
