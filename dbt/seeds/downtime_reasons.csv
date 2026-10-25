@@ -1,0 +1,4 @@
+downtime_reason,reason_label,owner_team,is_planned
+BREAKDOWN,Panne machine,Maintenance,false
+CHANGEOVER,Changement de série,Production,true
+MATERIAL_SHORTAGE,Manque matière,Logistique,false

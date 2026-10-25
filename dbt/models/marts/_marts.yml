@@ -1,0 +1,104 @@
+models:
+  - name: dim_machines
+    description: Une ligne par machine de la ligne de production.
+    columns:
+      - name: machine_id
+        data_tests:
+          - unique
+          - not_null
+      - name: ideal_parts_per_hour
+        description: Cadence théorique, en pièces par heure (3600 / temps de cycle).
+
+  - name: dim_downtime_reasons
+    description: Une ligne par cause d'arrêt.
+    columns:
+      - name: downtime_reason
+        data_tests:
+          - unique
+          - not_null
+
+  - name: fct_production_15min
+    description: >
+      Grain : une ligne par machine et par quart d'heure d'ouverture.
+      Production, arrêts, énergie (kWh) et CO2 (kg).
+    columns:
+      - name: production_slot_id
+        data_tests:
+          - unique
+          - not_null
+      - name: machine_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_machines')
+                field: machine_id
+      - name: downtime_reason
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_downtime_reasons')
+                field: downtime_reason
+      - name: shift
+        description: Équipe (Matin 5 h-13 h, Après-midi 13 h-21 h, Nuit 21 h-5 h, heure de Paris).
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['Matin', 'Après-midi', 'Nuit']
+      - name: energy_kwh
+        description: Énergie consommée par la machine pendant le quart d'heure, en kWh.
+      - name: grid_co2_g_per_kwh
+        description: Intensité CO2 du réseau pendant l'heure, en g/kWh (source RTE).
+        data_tests:
+          - not_null:
+              config:
+                severity: warn
+                where: "slot_start < timestamp_sub(current_timestamp(), interval 3 hour)"
+      - name: co2_kg
+        description: CO2 émis pour produire l'électricité consommée, en kg.
+
+  - name: fct_oee_daily
+    description: >
+      Grain : une ligne par machine et par jour de production.
+      TRS (OEE) = disponibilité x performance x qualité.
+    columns:
+      - name: oee_daily_id
+        data_tests:
+          - unique
+          - not_null
+      - name: availability
+        description: Disponibilité = temps de marche / temps d'ouverture.
+      - name: performance
+        description: Performance = temps théorique des pièces produites / temps de marche.
+      - name: quality
+        description: Qualité = pièces bonnes / pièces produites.
+      - name: oee
+        description: TRS = temps théorique des pièces bonnes / temps d'ouverture.
+        data_tests:
+          - not_null
+
+  - name: fct_plant_daily
+    description: "Grain : une ligne par jour. Faisceaux produits, TRS moyen, énergie et CO2 de l'usine."
+    columns:
+      - name: production_date
+        data_tests:
+          - unique
+          - not_null
+      - name: harnesses_produced
+        description: Faisceaux bons sortis du banc de test (dernière machine de la ligne).
+      - name: co2_g_per_harness
+        description: Grammes de CO2 par faisceau produit (électricité de toute la ligne).
+
+unit_tests:
+  - name: test_calcul_du_trs
+    description: Deux quarts d'heure connus donnent le TRS attendu.
+    model: fct_oee_daily
+    given:
+      - input: ref('fct_production_15min')
+        format: dict
+        rows:
+          - {production_date: "2026-10-14", machine_id: CUT-01, run_minutes: 15, parts_produced: 400, good_parts: 396, parts_scrapped: 4, ideal_cycle_time_s: 2.0, energy_kwh: 1.9, co2_kg: 0.04}
+          - {production_date: "2026-10-14", machine_id: CUT-01, run_minutes: 5, parts_produced: 120, good_parts: 120, parts_scrapped: 0, ideal_cycle_time_s: 2.0, energy_kwh: 0.9, co2_kg: 0.02}
+    expect:
+      format: dict
+      rows:
+        - {production_date: "2026-10-14", machine_id: CUT-01, planned_minutes: 30, run_minutes: 20, availability: 0.6667, performance: 0.8667, quality: 0.9923, oee: 0.5733}

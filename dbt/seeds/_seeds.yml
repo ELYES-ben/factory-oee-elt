@@ -20,3 +20,12 @@ seeds:
         description: Puissance électrique quand la machine est à l'arrêt, en kW.
       - name: is_line_output
         description: Vrai pour la dernière machine de la ligne, qui sort les faisceaux finis.
+
+  - name: downtime_reasons
+    description: Référentiel des causes d'arrêt et de l'équipe qui doit agir.
+    columns:
+      - name: downtime_reason
+        description: Code de la cause d'arrêt, identique à celui du MES.
+        data_tests:
+          - unique
+          - not_null
