@@ -1,0 +1,21 @@
+# Ajouts au fichier officiel docker-compose.yaml d'Airflow.
+# Docker Compose lit les deux fichiers et les fusionne automatiquement.
+x-pipeline: &pipeline
+  image: factory-oee-airflow:3.3.2  # nom de NOTRE image, construite à partir du Dockerfile
+  build: .
+  environment:
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false"  # cache les DAG d'exemple d'Airflow
+    GCP_PROJECT_ID: ${GCP_PROJECT_ID:?renseigne GCP_PROJECT_ID dans airflow/.env}
+    GOOGLE_APPLICATION_CREDENTIALS: /opt/gcp/key.json
+  volumes:
+    - ../ingestion:/opt/project/ingestion
+    - ../dbt:/opt/project/dbt
+    - ${GCP_KEY_FILE:?renseigne GCP_KEY_FILE dans airflow/.env}:/opt/gcp/key.json:ro
+
+services:
+  airflow-apiserver: *pipeline
+  airflow-scheduler: *pipeline
+  airflow-dag-processor: *pipeline
+  airflow-worker: *pipeline
+  airflow-triggerer: *pipeline
+  airflow-init: *pipeline
