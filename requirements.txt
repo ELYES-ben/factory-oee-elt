@@ -1,6 +1,6 @@
-requests==2.34.2
-google-cloud-bigquery==3.46.1
-dbt-core==1.12.6
-dbt-bigquery==1.12.1
+]633;E;echo "# Dépendances du pipeline (les mêmes que dans l'image Airflow)";3fbba53b-9156-4a8e-bbc9-1d6cac304f86]633;C# Dépendances du pipeline (les mêmes que dans l'image Airflow)
+-r airflow/requirements-pipeline.txt
+
+# Outils de développement
 pytest==9.1.1
 ruff==0.17.1
