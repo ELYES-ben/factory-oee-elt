@@ -1,4 +1,4 @@
-# 🏭 Factory OEE ELT
+# Factory OEE ELT
 
 [![CI](https://github.com/ELYES-ben/factory-oee-elt/actions/workflows/ci.yml/badge.svg)](https://github.com/ELYES-ben/factory-oee-elt/actions/workflows/ci.yml)
 [![Pipeline quotidien](https://github.com/ELYES-ben/factory-oee-elt/actions/workflows/daily.yml/badge.svg)](https://github.com/ELYES-ben/factory-oee-elt/actions/workflows/daily.yml)
@@ -14,9 +14,9 @@ Les données de production (MES) sont croisées avec l'intensité carbone réell
 électrique français (API RTE éCO2mix) pour répondre à trois questions :
 **Comment va l'usine ? Quelle machine freine la ligne, et pourquoi ? Combien coûte chaque faisceau en énergie et en CO2 ?**
 
-📊 **[Ouvrir le dashboard](https://datastudio.google.com/reporting/de9b106a-066b-49d5-b19e-e26123262a64)** ·
-📚 **[Documentation dbt et lineage](https://elyes-ben.github.io/factory-oee-elt/)** ·
-⚙️ **[Exécutions du pipeline](https://github.com/ELYES-ben/factory-oee-elt/actions)**
+**[Ouvrir le dashboard](https://datastudio.google.com/reporting/de9b106a-066b-49d5-b19e-e26123262a64)** ·
+**[Documentation dbt et lineage](https://elyes-ben.github.io/factory-oee-elt/)** ·
+**[Exécutions du pipeline](https://github.com/ELYES-ben/factory-oee-elt/actions)**
 
 ![Dashboard Factory OEE](docs/img/dashboard.png)
 
