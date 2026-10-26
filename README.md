@@ -1,5 +1,13 @@
 # Factory OEE ELT
 
+[![CI](https://github.com/ELYES-ben/factory-oee-elt/actions/workflows/ci.yml/badge.svg)](https://github.com/ELYES-ben/factory-oee-elt/actions/workflows/ci.yml)
+[![Pipeline quotidien](https://github.com/ELYES-ben/factory-oee-elt/actions/workflows/daily.yml/badge.svg)](https://github.com/ELYES-ben/factory-oee-elt/actions/workflows/daily.yml)
+[![Docs dbt](https://img.shields.io/badge/docs-dbt-orange)](https://elyes-ben.github.io/factory-oee-elt/)
+
+[![CI](https://github.com/ELYES-ben/factory-oee-elt/actions/workflows/ci.yml/badge.svg)](https://github.com/ELYES-ben/factory-oee-elt/actions/workflows/ci.yml)
+[![Pipeline quotidien](https://github.com/ELYES-ben/factory-oee-elt/actions/workflows/daily.yml/badge.svg)](https://github.com/ELYES-ben/factory-oee-elt/actions/workflows/daily.yml)
+[![Docs dbt](https://img.shields.io/badge/docs-dbt-orange)](https://elyes-ben.github.io/factory-oee-elt/)
+
 Pipeline de données cloud qui calcule le TRS (OEE), les causes d'arrêt et le CO2
 d'une ligne de faisceaux électriques automobiles.
 
@@ -66,3 +74,13 @@ docker compose build
 docker compose up airflow-init
 docker compose up -d   # UI : http://localhost:8080 (airflow / airflow)
 ```
+
+## Automatisation (GitHub Actions)
+
+| Workflow | Déclencheur | Rôle |
+|---|---|---|
+| `ci.yml` | Chaque push | ruff + pytest, puis `dbt build` sur le dataset `dbt_ci` |
+| `daily.yml` | Tous les jours à 5 h 17 UTC | Ingestion → fraîcheur des sources → `dbt build --target prod` |
+| `docs.yml` | Chaque push sur `main` | Documentation dbt publiée sur [GitHub Pages](https://elyes-ben.github.io/factory-oee-elt/) |
+
+La clé BigQuery est stockée dans un secret GitHub (`GCP_SA_KEY`), jamais dans le code.
