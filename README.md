@@ -84,3 +84,15 @@ docker compose up -d   # UI : http://localhost:8080 (airflow / airflow)
 | `docs.yml` | Chaque push sur `main` | Documentation dbt publiée sur [GitHub Pages](https://elyes-ben.github.io/factory-oee-elt/) |
 
 La clé BigQuery est stockée dans un secret GitHub (`GCP_SA_KEY`), jamais dans le code.
+
+## Dashboard (Looker Studio)
+
+[Ouvrir le dashboard](https://datastudio.google.com/reporting/de9b106a-066b-49d5-b19e-e26123262a64)
+
+![Dashboard Factory OEE](docs/img/dashboard.png)
+
+- Vue usine : faisceaux produits, TRS, kWh et g CO2 par faisceau, tendance quotidienne.
+- TRS par machine : disponibilité, performance et qualité pour isoler la machine et la cause.
+- Arrêts et énergie : minutes d'arrêt par motif et équipe responsable, énergie et CO2 par équipe.
+
+Les ratios sur une période sont calculés en somme sur somme (jamais en moyenne de ratios journaliers).
